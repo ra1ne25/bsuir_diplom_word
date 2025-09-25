@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Генерация DOCX</title>
+    <style>
+      :root { color-scheme: light dark; }
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 0; }
+      .container { max-width: 720px; margin: 0 auto; padding: 24px; }
+      h1 { font-size: 1.5rem; margin: 0 0 16px; }
+      form { display: grid; gap: 12px; }
+      label { display: grid; gap: 6px; }
+      input[type="text"], input[type="number"], input[type="file"] { padding: 10px 12px; border: 1px solid #8884; border-radius: 8px; font-size: 1rem; }
+      button { padding: 12px 14px; font-size: 1rem; border: 0; border-radius: 8px; background: #2563eb; color: white; cursor: pointer; }
+      button:disabled { background: #94a3b8; cursor: not-allowed; }
+      .row { display: grid; grid-template-columns: 1fr; gap: 12px; }
+      @media (min-width: 640px) { .row { grid-template-columns: 1fr 1fr; } }
+      .help { color: #64748b; font-size: .9rem; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Сгенерировать DOCX из шаблона</h1>
+      <form method="post" action="/generate" enctype="multipart/form-data" onsubmit="return validateYear();">
+        <div class="row">
+          <label>
+            <span>ФИО (белорусский)</span>
+            <input type="text" name="fio_be" placeholder="Іван Іванавіч" required />
+          </label>
+          <label>
+            <span>ФИО (русский)</span>
+            <input type="text" name="fio_ru" placeholder="Иван Иванович" required />
+          </label>
+        </div>
+        <div class="row">
+          <label>
+            <span>Год</span>
+            <input type="number" name="year" placeholder="2025" min="1900" max="2100" required />
+          </label>
+          <label>
+            <span>Идентификационный номер (по паспорту)</span>
+            <input type="text" name="passport_id" placeholder="MP1234567" />
+          </label>
+        </div>
+        <div class="row">
+          <label>
+            <span>Картинка 1</span>
+            <input type="file" name="image1" accept="image/*" />
+          </label>
+          <label>
+            <span>Картинка 2</span>
+            <input type="file" name="image2" accept="image/*" />
+          </label>
+        </div>
+        <button type="submit">Скачать DOCX</button>
+      </form>
+    </div>
+    <script>
+      function validateYear() {
+        const input = document.querySelector('input[name="year"]');
+        const value = (input.value || '').trim();
+        const n = Number(value);
+        if (!Number.isInteger(n) || n < 1900 || n > 2100) {
+          alert('Год должен быть числом от 1900 до 2100');
+          return false;
+        }
+        return true;
+      }
+    </script>
+  </body>
+</html>
